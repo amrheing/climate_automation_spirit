@@ -1,0 +1,92 @@
+- id: 'schlafzimmer_thermostat_rechts'
+  alias: Schlafzimmer Thermostat rechts Automation
+  description: ''
+  trigger:
+  # list all parameters to get quick reactions
+  - entity_id: input_boolean.heizung_global_on_off
+    platform: state
+  - entity_id: climate.thermostat_schlafzimmer_rechts
+    platform: state
+  - entity_id: input_boolean.heizung_global_home_mode
+    platform: state
+  - entity_id: input_boolean.heizung_sz_scheduler
+    platform: state
+  - entity_id: input_text.schlafzimmer_sunday
+    platform: state
+  - entity_id: input_text.schlafzimmer_saturday
+    platform: state
+  - entity_id: input_text.schlafzimmer_workdays
+    platform: state
+  - entity_id: input_boolean.heizung_sz_set_default_eco_temperature
+    platform: state
+  - entity_id: input_number.heizung_sz_eco_temperature
+    platform: state
+  - entity_id: input_number.heizung_sz_komfort_temperature
+    platform: state
+  - entity_id: input_boolean.heizung_sz_simulate_window
+    platform: state
+  - entity_id: binary_sensor.sz_window_left
+    platform: state
+  - entity_id: binary_sensor.sz_door
+    platform: state
+  - entity_id: binary_sensor.sz_window_right
+    platform: state
+  # timepattern is not needed - optional
+  - minutes: /5
+    platform: time_pattern
+  condition: []
+  action:
+  - data_template:
+      # decide what should happen when window is open
+      # Switch Off: Preset Eco
+      # Switch On: HVAC Off
+      # Default: off <-- Eco Mode is used when windows are open
+      window_off_mode: input_boolean.heizung_sz_window_off_mode             # Optional
+      # temperatures
+      # a eco temperature what can be used for all thermostat
+      set_default_eco: input_boolean.heizung_sz_set_default_eco_temperature # Optional
+      # Default: 16
+      eco_global_temperature: input_number.heizung_global_eco_temperature   # Optional
+      # switch on/off the scheduler
+      # there are stored the last temperatures
+      # No Default - value set by climate object
+      eco_temperature: input_number.heizung_sz_eco_temperature              # mandatory
+      comfort_temperature: input_number.heizung_sz_komfort_temperature      # mandatory
+      # debug
+      # Default: off <-- No debug Log entrys
+      debug: input_boolean.heizung_global_debug_mode                        # Optional
+      # entites to control
+      # entites :: this si a list, but there is only the first one used. 
+      # maybe for future purposes
+      entity_ids:
+      - climate.thermostat_schlafzimmer_rechts                              # mandatory
+      # without scheduler Preset None == normal heating
+      # Default: on
+      use_scheduler: input_boolean.heizung_sz_scheduler                     # Optional
+      # schedules
+      # input_text helpers
+      # Regex to control the data: ([0-9]{1,2}(:[0-9]{2})?-[0-9]{1,2}(:[0-9]{2})?[,]?)*
+      schedule_saturdays: input_text.schlafzimmer_saturday                  # mandatory
+      schedule_sundays: input_text.schlafzimmer_sunday                      # mandatory
+      schedule_weekdays: input_text.schlafzimmer_workdays                   # mandatory
+      # presence
+      # there can be as much switches you want
+      # Default: on <-- we are at home
+      sensors_presence:
+      - input_boolean.heizung_global_home_mode                              # Optional
+      # on/off switches
+      # there can be as much switches you want
+      # Default: on <-- Preset None == heating
+      switches_on_off:
+      - input_boolean.heizung_global_on_off                                 # Optional
+      # windows
+      # Default: off <-- Windows Closed
+      windows:
+      - binary_sensor.sz_window_left                                        # Optional
+      - binary_sensor.sz_door                                                  # Optional
+      - binary_sensor.sz_window_right                                       # Optional
+      # simulate switch for testing purposes
+      - input_boolean.heizung_sz_simulate_window                            # Optional
+      # Master: True // SLAVE: <masters entity_id> 
+      master: True                                                          # Optional
+    service: python_script.climate_automation_spirit                        # mandatory

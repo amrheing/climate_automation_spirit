@@ -1,0 +1,21 @@
+- id: 'schlafzimmer_thermostat_links'
+  alias: Schlafzimmer Thermostat Links Automation
+  description: ''
+  trigger:
+  # slave is only triggered by the master thermostat
+  - entity_id: climate.thermostat_schlafzimmer_rechts
+    platform: state
+  - platform: time_pattern
+    minutes: /5
+  condition: []
+  action:
+  - data_template:
+      # debug
+      debug: input_boolean.heizung_global_debug_mode
+      # entites :: this si a list, but there is only the first one used. 
+      # maybe for future purposes
+      entity_ids:
+      - climate.thermostat_schlafzimmer_links
+      # mandatory for a slave configuration
+      master: climate.thermostat_schlafzimmer_rechts
+    service: python_script.climate_automation_spirit
