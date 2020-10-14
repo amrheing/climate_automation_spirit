@@ -189,10 +189,10 @@ Many blocks can be set by seperated by a colon ","
   alias: Schlafzimmer Thermostat Links Automation
   description: ''
   trigger:
-  # slave is only triggered by the master thermostat
+  # slave is normaly only triggered by the master thermostat
   - entity_id: climate.thermostat_schlafzimmer_rechts
     platform: state
-  # timepattern is not needed - optional - is good to use when zwave is not so perfect :-)
+  # timepattern is not needed - is good to use as backup trigger when zwave is not so perfect :-)
   - platform: time_pattern
     minutes: /5
   condition: []
