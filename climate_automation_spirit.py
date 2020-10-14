@@ -19,17 +19,17 @@ def ld(msg, *args):
 logger.info("Start climate_automation_spirit - DEBUG: %s", DEBUG)
 
 # Defaults
-DEFAULT_ECO = 16												# will be set if no input is available
-DEFAULT_COMFORT = 21										# will be set if no input is available
-DEFAULT_PRESENSE = True									# in default we are at home
-DEFAULT_SWITCH_ON_OFF = True						# in default the climate should be on
-DEFAULT_WINDOW_OPEN = False							# in default all windows are closed
-DEFAULT_SET_DEFAULT_ECO = False					# the global eco temperature will be ignored
+DEFAULT_ECO = 16				# will be set if no input is available
+DEFAULT_COMFORT = 21				# will be set if no input is available
+DEFAULT_PRESENSE = True				# in default we are at home
+DEFAULT_SWITCH_ON_OFF = True			# in default the climate should be on
+DEFAULT_WINDOW_OPEN = False			# in default all windows are closed
+DEFAULT_SET_DEFAULT_ECO = False			# the global eco temperature will be ignored
 DEFAULT_USE_WINDOW_AUTOMATION = False		# no recognition of open windows
-DEFAULT_USE_SCHEDULER = False						# Time scheduleing if climate control is off
-DEFAULT_IN_TIME = False 								# If schedule is used, eco mode will be default
-DEFAULT_WINODW_OFF_MODE = False 				# If winodw is open, eco mode will be set
-DEFAULT_MASTER = True										# used to backup the temperatures - only one in a room should do this
+DEFAULT_USE_SCHEDULER = False			# Time scheduleing if climate control is off
+DEFAULT_IN_TIME = False 			# If schedule is used, eco mode will be default
+DEFAULT_WINODW_OFF_MODE = False 		# If winodw is open, eco mode will be set
+DEFAULT_MASTER = True				# used to backup the temperatures - only one in a room should do this
 
 # parameters for automation rule
 PARAM_ENTITY_IDS = "entity_ids"
