@@ -1,6 +1,6 @@
-<a href="https://github.com/amrheing/climate_automation_spirit/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/amrheing/climate_automation"></a>
-<a href="https://github.com/amrheing/climate_automation/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/amrheing/climate_automation"></a>
-<a href="https://github.com/amrheing/climate_automation/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/amrheing/climate_automation"></a>
+<a href="https://github.com/amrheing/climate_automation_spirit/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/amrheing/climate_automation_spirit"></a>
+<a href="https://github.com/amrheing/climate_automation_spirit/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/amrheing/climate_automation_spirit"></a>
+<a href="https://github.com/amrheing/climate_automation_spirit/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/amrheing/climate_automation_spirit"></a>
 
 # climate_automation_spirit.py 
 
