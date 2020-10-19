@@ -116,10 +116,24 @@ Many blocks can be set by seperated by a colon ","
     platform: state
   - entity_id: binary_sensor.sz_window_left
     platform: state
+    # if the window opens only a short time no action is triggered. 
+    # good for battery live!
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
   - entity_id: binary_sensor.sz_door
     platform: state
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
   - entity_id: binary_sensor.sz_window_right
     platform: state
+    for:
+      hours: 0
+      minutes: 2
+      seconds: 0
   # timepattern is not needed - optional - is good to use when zwave is not so perfect :-)
   - minutes: /5
     platform: time_pattern
