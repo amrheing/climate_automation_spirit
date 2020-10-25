@@ -182,7 +182,7 @@ def is_time_between(now, begin_time, end_time) -> bool:
 	ld("+ check %s < %s < %s", begin, now, end)
 	try:
 		if now >= begin and now <= end:
-			ld("- is in time slot!")
+			ld("+ is in time slot!")
 			return True
 		else:  
 			ld("- not in time slot")
@@ -195,14 +195,16 @@ def is_time_between(now, begin_time, end_time) -> bool:
 def is_in_time(schedule) -> bool:
 	if schedule != None:
 		slots = schedule.split(",")
+		ld("Slots: %s", slots)
+		RETURN = False
 		for slot in slots:
 			start = slot.split("-")[0]
 			end = slot.split("-")[1]
 			ld("+ Slot: %s - Start: %s - End: %s", slot, start, end)
 			if is_time_between(now, start, end) == True:
 				return True
-			else:
-				return DEFAULT_IN_TIME
+		ld("not in time schedule")
+		return DEFAULT_IN_TIME
 
 # function to check presense
 def is_at_home() -> bool:
@@ -285,7 +287,6 @@ def set_climate_setpoint(target_temperature):
 		try:
 			SERVICE_DATA = service_data(ENTITY_ID)
 			SERVICE_DATA[CLIMATE_TEMPERATURE] = float(target_temperature)
-			SERVICE_DATA[CLIMATE_HVAC_MODE] = HVAC_MODE_HEAT
 			ld("- Set climate setpoint to %s - %s", target_temperature, SERVICE_DATA)
 			hass.services.call(DOMAIN_CLIMATE, SERVICE_SET_TEMPERATURE, SERVICE_DATA, False)
 		except:
@@ -391,8 +392,7 @@ if  ENTITY_ID != "":
 		##########################################################################################
 		#  get all the states to control                                                         #
 		##########################################################################################
-
-	
+			
 		# presense
 		ld("### Check presense ###")
 	
@@ -445,7 +445,7 @@ if  ENTITY_ID != "":
 			if current_preset == PRESET_MODE_NONE:
 				SERVICE_DATA = service_data(SENSOR_TEMP_COMFORT)
 				SERVICE_DATA['value'] = float(current_setpoint)
-			ld("+ Update sith Service Data %s", SERVICE_DATA)
+			ld("+ Update with Service Data %s", SERVICE_DATA)
 			hass.services.call(DOMAIN_INPUT_NUMBER, SERVICE_SET_VALUE, SERVICE_DATA, False)
 
 		logger.info("%s :: --> Actual States %s - Preset: %s - Setpoint: %s - Temperature: %s", ENTITY_ID, current_mode, current_preset, current_setpoint, current_temperature)		
@@ -506,7 +506,9 @@ if  ENTITY_ID != "":
 							ld("- we are out of heating time")
 							target_preset = PRESET_MODE_ECO
 					else:
-						ld("- leave all as it is")
+						ld("- Scheduler is not used - Target is HEAT")
+						target_mode = HVAC_MODE_HEAT
+						target_preset = PRESET_MODE_NONE
 			else:
 				logger.info("- We are out not at home")
 				target_preset = PRESET_MODE_ECO
@@ -518,14 +520,16 @@ if  ENTITY_ID != "":
 		logger.info("%s :: --> Target Mode: %s - Target Preset: %s", ENTITY_ID, target_mode, target_preset)
 		#set hvac mode			
 		if target_mode == HVAC_MODE_OFF:
-			set_climate_hvac_mode(target_mode)
+			set_climate_hvac_mode(HVAC_MODE_OFF)
 		
 		# set the target preset if hvac mode is heat
 		if target_mode == HVAC_MODE_HEAT:
-			set_climate_hvac_mode(HVAC_MODE_HEAT)
+			if current_mode == HVAC_MODE_OFF:
+				set_climate_hvac_mode(HVAC_MODE_HEAT)
 			set_climate_preset_mode(target_preset)
 
 		if current_preset == PRESET_MODE_ECO:
+			ld("Curent Preset Mode is ECO")
 			slave_setpoint = TEMPERATURE_ECO
 			if TEMPERATURE_SET_DEFAULT_ECO == True:
 				ld("+ we use the global eco temperature")
